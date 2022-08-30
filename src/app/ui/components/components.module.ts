@@ -13,7 +13,7 @@ import { BasketsModule } from './baskets/baskets.module';
     CommonModule,
     ProductsModule,
     HomeModule,
-    BasketsModule
+    BasketsModule,
   ]
 })
 export class ComponentsModule { }
