@@ -9,6 +9,3 @@ declare var $:any //jquery eklenmek için kullanma
 export class AppComponent {
   title = 'ETicaretClient';
 }
-$(document).ready(()=>{
-  alert("asd")
-})
