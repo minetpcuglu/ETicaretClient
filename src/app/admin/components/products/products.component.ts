@@ -22,4 +22,36 @@ export class ProductsComponent extends BaseComponent implements OnInit{
     }).subscribe(data=>console.log(data));
   }
 
+
+//     this.httpClientService.post({
+//      controller:"products",
+//      action:"addproduct"
+//     },{
+// name:"Kalem",
+// UnitInStock:50,
+// Price:450
+//     }).subscribe();
+
+//     this.httpClientService.put({
+//      controller:"products",
+//      action:"updateproduct"
+//     },{
+//     id:"f4150830-cc4f-43be-6b26-08da8c4d7e4c",
+// name:"güncelle",
+// unitInStock:50,
+// price:450
+//     }).subscribe();
+
+
+// this.httpClientService.delete({
+//   controller:"products",
+//   action:"deleteproduct"
+// },"b9acfd5d-2275-4dbd-6b29-08da8c4d7e4c")
+// .subscribe();
+//   }
+
+// this.httpClientService.get({
+//   fullEndPoint:"https://jsonplaceholder.typicode.com/posts",
+// }).subscribe(data=>console.log(data));
+//   }
 }
