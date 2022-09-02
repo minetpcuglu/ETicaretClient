@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { BaseComponent, SpinnerType } from 'src/app/base/base.component';
-import { Product } from 'src/app/contracts/product';
+import { CreateProduct } from 'src/app/contracts/createproduct';
 import { HttpClientService } from 'src/app/services/common/http-client.service';
 
 @Component({
@@ -17,7 +17,7 @@ export class ProductsComponent extends BaseComponent implements OnInit{
 
   ngOnInit(): void {
     this.showSpinner(SpinnerType.BallSpinClockwiseFadeRotating);
-    this.httpClientService.get<Product[]>({
+    this.httpClientService.get<CreateProduct[]>({
       controller:"products",
       action:"getproducts"
     }).subscribe(data=>console.log(data));
