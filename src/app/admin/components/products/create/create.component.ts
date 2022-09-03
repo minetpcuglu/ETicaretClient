@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { BaseComponent, SpinnerType } from 'src/app/base/base.component';
 import { CreateProduct } from 'src/app/contracts/createproduct';
@@ -19,6 +19,8 @@ export class CreateComponent extends BaseComponent implements OnInit {
 
   ngOnInit(): void {
   }
+  
+  @Output() createdProduct:EventEmitter<CreateProduct>=new EventEmitter();
   create(name:HTMLInputElement,stock:HTMLInputElement,price:HTMLInputElement){
     this.showSpinner(SpinnerType.BallAtom);
     const createProduct : CreateProduct = new CreateProduct();
@@ -33,7 +35,7 @@ export class CreateComponent extends BaseComponent implements OnInit {
       messageType:MessageType.Success,
       positionType:PositionType.TopRigth
     });
-debugger;
+    this.createdProduct.emit(createProduct); //sayfalama yapıldıgında eklenen her veri sayfaya eklenmesı icin
   },errorMessage =>{
     this.alertify.message(errorMessage,{
       dismissOthers:true,
