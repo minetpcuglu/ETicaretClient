@@ -16,11 +16,11 @@ export class ProductsComponent extends BaseComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    this.showSpinner(SpinnerType.BallSpinClockwiseFadeRotating);
-    this.httpClientService.get<CreateProduct[]>({
-      controller:"products",
-      action:"getproducts"
-    }).subscribe(data=>console.log(data));
+    // this.showSpinner(SpinnerType.BallSpinClockwiseFadeRotating);
+    // this.httpClientService.get<CreateProduct[]>({
+    //   controller:"products",
+    //   action:"getproducts"
+    // }).subscribe(data=>console.log(data));
   }
 
 
