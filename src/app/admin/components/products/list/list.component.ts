@@ -7,6 +7,7 @@ import { ListProducts } from 'src/app/contracts/listproducts';
 import { AlertifyService, MessageType, PositionType } from 'src/app/services/admin/alertify.service';
 import { ProductService } from 'src/app/services/common/models/product.service';
 
+declare var $ :any; // jquery talebi
 @Component({
   selector: 'app-list',
   templateUrl: './list.component.html',
@@ -35,7 +36,7 @@ export class ListComponent extends BaseComponent implements OnInit{
 //       this.paginator.length =allProducts.totalCount;
      
   // }
-displayedColumns: string[] = ['name','price', 'unitInStock',  'createdDate', 'updatedDate'];
+displayedColumns: string[] = ['name','price', 'unitInStock',  'createdDate', 'updatedDate','edit','delete'];
 dataSource: MatTableDataSource<ListProducts> = null;
 @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -49,6 +50,11 @@ async getProducts() {
   this.dataSource = new MatTableDataSource<ListProducts>(allProducts.products);
   this.paginator.length = allProducts.totalCount;
 }
+
+// delete(id,event){ //directive kullanılmadan 
+//   const img : HTMLImageElement=event.srcElement;
+//  $(img.parentElement.parentElement).fadeOut(2000);
+// }
  async pageChanged(){
     await this.getProducts();
   }
