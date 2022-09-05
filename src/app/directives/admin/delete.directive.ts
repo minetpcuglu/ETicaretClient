@@ -1,8 +1,10 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Directive, ElementRef,EventEmitter,HostListener,Input,Output,Renderer2 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { NgxSpinnerService } from 'ngx-spinner';
 import {  SpinnerType } from 'src/app/base/base.component';
 import { DeleteDialogComponent, DeleteState } from 'src/app/dialogs/delete-dialog/delete-dialog.component';
+import { AlertifyService, MessageType, PositionType } from 'src/app/services/admin/alertify.service';
 import { HttpClientService } from 'src/app/services/common/http-client.service';
 
 //js kullanımı ıcın
@@ -21,7 +23,8 @@ export class DeleteDirective {
     private _renderer:Renderer2,//nesneye müdahale edebilmek icin // manipülaston işlemleri gerceklestirmek icin
     private httpClientService:HttpClientService,  //delete işlemi yaparken http olarak ilgili id ye istek göndermek icin
     private spinner:NgxSpinnerService,
-    public dialog: MatDialog)
+    public dialog: MatDialog,
+    private alertifyService:AlertifyService)
    {
     
 const img = _renderer.createElement("img");
@@ -46,9 +49,21 @@ async onclick(){
     controller:this.controller,
     action:this.action,
    },this.id).subscribe(data=>{
-    $(td.parentElement).animate({opacit:0,left:"+=50",height:"toogle"},700 ,() => {
+    $(td.parentElement).animate({opacit:0,left:"+=50",height:"toogle"},700,() => {
       this.callbackdeletedirectivesayfayenileme.emit();////silindikten sonra tablonun yenilenmesi icin//callback fonk ile cagırma
-          });
+         this.alertifyService.message("Silme işlemi başarı ile gerçekleşti",{
+          dismissOthers:true, //var olan butun mesajları kapat
+          messageType:MessageType.Success,
+          positionType:PositionType.TopRigth
+         })
+    });
+   },(errorResponse:HttpErrorResponse)=>{
+    this.spinner.hide(SpinnerType.BallAtom);//silerken spinner 
+    this.alertifyService.message("Silme işlemi gerçekleşmedi",{
+      dismissOthers:true, //var olan butun mesajları kapat
+      messageType:MessageType.Error,
+      positionType:PositionType.TopRigth
+     });
    });
   }); 
 }
