@@ -12,3 +12,7 @@
   </mat-form-field>
 
   <button mat-raised-button color="primary" class="product-button" (click)="create(txtName,txtPrice,txtStock)">Create Product</button>
+
+  <hr/>
+  <!-- //dosya secimini kullanmak ıcın [options eklendi] -->
+  <app-file-upload [options]="fileUploadOptions"></app-file-upload> 
