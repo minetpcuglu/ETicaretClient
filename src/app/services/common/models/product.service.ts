@@ -1,5 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { firstValueFrom, Observable } from 'rxjs';
 import { CreateProduct } from 'src/app/contracts/createproduct';
 import { ListProducts } from 'src/app/contracts/listproducts';
 import { HttpClientService } from '../http-client.service';
@@ -44,5 +45,16 @@ async read(page:number=0, size:number=5, successCallBack?:()=>void,errorCallBack
   .catch((errorResponse:HttpErrorResponse)=>errorCallBack(errorResponse.message))
 
   return await promiseData;
+}
+
+//id ye karsılık silme işlemi
+async delete(id:string){
+const deleteObservable:Observable<any>= this.httpClientService.delete<any>({
+  controller:"products",
+  action:"deleteProduct"
+},id);
+
+await firstValueFrom(deleteObservable);
+
 }
   }
