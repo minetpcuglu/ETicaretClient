@@ -3,7 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { NgxSpinnerService } from 'ngx-spinner';
 import {  SpinnerType } from 'src/app/base/base.component';
 import { DeleteDialogComponent, DeleteState } from 'src/app/dialogs/delete-dialog/delete-dialog.component';
-import { ProductService } from 'src/app/services/common/models/product.service';
+import { HttpClientService } from 'src/app/services/common/http-client.service';
 
 //js kullanımı ıcın
 declare var $: any;
@@ -19,7 +19,7 @@ export class DeleteDirective {
   constructor(
     private element:ElementRef, //directive cagırılan(kullandıgımız) html nesnesini elde etmek icin
     private _renderer:Renderer2,//nesneye müdahale edebilmek icin // manipülaston işlemleri gerceklestirmek icin
-    private productService:ProductService,  //delete işlemi yaparken http olarak ilgili id ye istek göndermek icin
+    private httpClientService:HttpClientService,  //delete işlemi yaparken http olarak ilgili id ye istek göndermek icin
     private spinner:NgxSpinnerService,
     public dialog: MatDialog)
    {
@@ -31,6 +31,8 @@ _renderer.appendChild(element.nativeElement,img)
    }
 
 //delete işlemi için
+@Input() controller:string;  //hangi controoler
+@Input() action:string //hangi action bunları istenilen action ve controller göre ayarlamk için parametre ekliyoruz
 @Input() id:string; //id yi yakalamak icin   
 @Output() callbackdeletedirectivesayfayenileme :EventEmitter<any> = new EventEmitter();   ////silindikten sonra tablonun yenilenmesi icin
 @HostListener("click")//ne zaman devreye girecek ne zaman tıklanılırsa 
@@ -40,10 +42,14 @@ async onclick(){
     this.spinner.show(SpinnerType.BallAtom);//silerken spinner 
     const td :HTMLTableCellElement =this.element.nativeElement //silme işlemi yapılacak satıra ulasmak ıcın
    //httpapi ile veri tabanından silme
-   await this.productService.delete(this.id);
+   await this.httpClientService.delete({
+    controller:this.controller,
+    action:this.action,
+   },this.id).subscribe(data=>{
     $(td.parentElement).animate({opacit:0,left:"+=50",height:"toogle"},700 ,() => {
-this.callbackdeletedirectivesayfayenileme.emit();////silindikten sonra tablonun yenilenmesi icin//callback fonk ile cagırma
-    });
+      this.callbackdeletedirectivesayfayenileme.emit();////silindikten sonra tablonun yenilenmesi icin//callback fonk ile cagırma
+          });
+   });
   }); 
 }
 
