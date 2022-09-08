@@ -48,13 +48,12 @@ async read(page:number=0, size:number=5, successCallBack?:()=>void,errorCallBack
 }
 
 //id ye karsılık silme işlemi
-async delete(id:string){
-const deleteObservable:Observable<any>= this.httpClientService.delete<any>({
-  controller:"products",
-  action:"deleteProduct"
-},id);
+async delete(id: string) {
+  const deleteObservable: Observable<any> = this.httpClientService.delete<any>({
+    controller: "products",
+    action:"deleteproduct"
+  }, id);
 
-await firstValueFrom(deleteObservable);
-
+  await firstValueFrom(deleteObservable);
 }
   }

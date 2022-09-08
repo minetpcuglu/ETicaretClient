@@ -5,6 +5,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import {  SpinnerType } from 'src/app/base/base.component';
 import { DeleteDialogComponent, DeleteState } from 'src/app/dialogs/delete-dialog/delete-dialog.component';
 import { AlertifyService, MessageType, PositionType } from 'src/app/services/admin/alertify.service';
+import { DialogService } from 'src/app/services/common/dialog.service';
 import { HttpClientService } from 'src/app/services/common/http-client.service';
 
 //js kullanımı ıcın
@@ -24,7 +25,8 @@ export class DeleteDirective {
     private httpClientService:HttpClientService,  //delete işlemi yaparken http olarak ilgili id ye istek göndermek icin
     private spinner:NgxSpinnerService,
     public dialog: MatDialog,
-    private alertifyService:AlertifyService)
+    private alertifyService:AlertifyService,
+    private dialogService:DialogService)
    {
     
 const img = _renderer.createElement("img");
@@ -38,17 +40,22 @@ _renderer.appendChild(element.nativeElement,img)
 @Input() action:string //hangi action bunları istenilen action ve controller göre ayarlamk için parametre ekliyoruz
 @Input() id:string; //id yi yakalamak icin   
 @Output() callbackdeletedirectivesayfayenileme :EventEmitter<any> = new EventEmitter();   ////silindikten sonra tablonun yenilenmesi icin
-@HostListener("click")//ne zaman devreye girecek ne zaman tıklanılırsa 
 
+
+@HostListener("click")//ne zaman devreye girecek ne zaman tıklanılırsa 
 async onclick(){
-  this.openDialog(async ()=>{
+  this.dialogService.openDialog({
+    componentType:DeleteDialogComponent,
+    data:DeleteState.Yes,
+    afterClosed:async () => {
     this.spinner.show(SpinnerType.BallAtom);//silerken spinner 
     const td :HTMLTableCellElement =this.element.nativeElement //silme işlemi yapılacak satıra ulasmak ıcın
    //httpapi ile veri tabanından silme
    await this.httpClientService.delete({
-    controller:this.controller,
+     controller:this.controller,
     action:this.action,
-   },this.id).subscribe(data=>{
+   }, this.id).subscribe(data=>{
+   
     $(td.parentElement).animate({opacit:0,left:"+=50",height:"toogle"},700,() => {
       this.callbackdeletedirectivesayfayenileme.emit();////silindikten sonra tablonun yenilenmesi icin//callback fonk ile cagırma
          this.alertifyService.message("Silme işlemi başarı ile gerçekleşti",{
@@ -65,22 +72,23 @@ async onclick(){
       positionType:PositionType.TopRigth
      });
    });
-  }); 
+  }
+  });
 }
 
-  //afterClosed:any //callbackfonk
-  openDialog(afterClosed:any): void {
-    const dialogRef = this.dialog.open(DeleteDialogComponent, {
-      width: '250px',
-      data:DeleteState.yes,
-    });
+  // //afterClosed:any //callbackfonk   //DİALOG SERVİCE TASINDI GENERİC HALE GELDİ
+  // openDialog(afterClosed:any): void {
+  //   const dialogRef = this.dialog.open(DeleteDialogComponent, {
+  //     width: '250px',
+  //     data:DeleteState.Yes,
+  //   });
 
-    dialogRef.afterClosed().subscribe(result => {
-      if(result == DeleteState.yes){
-        afterClosed();
-      }
-    });
-  }
+  //   dialogRef.afterClosed().subscribe(result => {
+  //     if(result == DeleteState.Yes){
+  //       afterClosed();
+  //     }
+  //   });
+  // }
 
 
 }

@@ -32,15 +32,17 @@
         <th mat-header-cell *matHeaderCellDef > </th>
         <td mat-cell *matCellDef="let element"> <img src="../../../../../assets/update.png"> </td>
       </ng-container>
+
       <ng-container matColumnDef="delete">
         <th mat-header-cell *matHeaderCellDef> </th>
-        <td [id]="element.id" mat-cell *matCellDef="let element" appDelete
+        <td  mat-cell *matCellDef="let element" appDelete
          [id]="element.id" 
          (callbackdeletedirectivesayfayenileme)="getProducts()"
          controller="products"
          action="deleteproduct"></td>
-          <!--<img src="../../../../../assets/delete.png" (click)="delete(element.id, $event)">--->
-      </ng-container>
+          <!-- <img src="../../../../../assets/delete.png" (click)="delete(element.id, $event)">---> 
+      </ng-container> 
+      
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>

@@ -42,22 +42,27 @@ export class HttpClientService {
     return this.httpClient.put<T>(url,body,{headers:requestParameters.headers});
   }
 
-  delete<T>(requestParameters :Partial<RequestParameters> , id:string):Observable<T>{
+  delete<T>(requestParameter: Partial<RequestParameters>, id: string):Observable<T> {
     let url: string = "";
-    if(requestParameters.fullEndPoint)
-    url = requestParameters.fullEndPoint;
-    else
-    url=`${this.url(requestParameters)}/${id}${requestParameters.queryString ? `?${requestParameters.queryString}` :"" }`;
-    return this.httpClient.delete<T>(url,{headers:requestParameters.headers});
+  if (requestParameter.fullEndPoint)
+    url = requestParameter.fullEndPoint;
+  else
+    url = `${this.url(requestParameter)}/${id}${requestParameter.queryString ? `?${requestParameter.queryString}` : ""}`;
+
+  return this.httpClient.delete<T>(url, { headers: requestParameter.headers });
   }
 }
 
 export class RequestParameters{
-  controller?:string;
-  action?:string;
-  queryString?:string;
-
-  headers?:HttpHeaders;
-  baseUrl?:string;
-  fullEndPoint?:string;
+  controller?: string;
+  action?: string;
+  queryString?: string;
+  
+  headers?: HttpHeaders;
+  baseUrl?: string;
+  fullEndPoint?: string;
 }
+
+
+
+
