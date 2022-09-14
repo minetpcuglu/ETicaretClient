@@ -4,7 +4,9 @@ import { MatTableDataSource, _MatTableDataSource } from '@angular/material/table
 import {  NgxSpinnerService } from 'ngx-spinner';
 import { BaseComponent, SpinnerType } from 'src/app/base/base.component';
 import { ListProducts } from 'src/app/contracts/listproducts';
+import { SelectProductImageDialogComponent } from 'src/app/dialogs/select-product-image-dialog/select-product-image-dialog.component';
 import { AlertifyService, MessageType, PositionType } from 'src/app/services/admin/alertify.service';
+import { DialogService } from 'src/app/services/common/dialog.service';
 import { ProductService } from 'src/app/services/common/models/product.service';
 
 declare var $ :any; // jquery talebi
@@ -15,11 +17,15 @@ declare var $ :any; // jquery talebi
 })
 export class ListComponent extends BaseComponent implements OnInit{
 
-  constructor(spinner :NgxSpinnerService, private productService:ProductService ,private alertifyService:AlertifyService) { 
+  constructor(
+    spinner :NgxSpinnerService,
+     private productService:ProductService ,
+     private alertifyService:AlertifyService,
+     private dialogService:DialogService) { 
     super(spinner)
   }
 
-displayedColumns: string[] = ['name','price', 'unitInStock',  'createdDate', 'updatedDate','edit','delete'];
+displayedColumns: string[] = ['name','price', 'unitInStock',  'createdDate', 'updatedDate','images','edit','delete'];
 dataSource: MatTableDataSource<ListProducts> = null;
 @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -38,6 +44,19 @@ async getProducts() {
 //   const img : HTMLImageElement=event.srcElement;
 //  $(img.parentElement.parentElement).fadeOut(2000);
 // }
+
+
+addProductImages(id: string){
+this.dialogService.openDialog({
+componentType:SelectProductImageDialogComponent,
+data:id,
+options:{
+  width:"1400px"
+}
+});
+}
+
+
  async pageChanged(){
     await this.getProducts();
   }
