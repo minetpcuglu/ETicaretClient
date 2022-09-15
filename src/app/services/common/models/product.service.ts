@@ -2,6 +2,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { firstValueFrom, Observable } from 'rxjs';
 import { CreateProduct } from 'src/app/contracts/createproduct';
+import { ListProductImages } from 'src/app/contracts/listproductimages';
 import { ListProducts } from 'src/app/contracts/listproducts';
 import { HttpClientService } from '../http-client.service';
 
@@ -53,7 +54,18 @@ async delete(id: string) {
     controller: "products",
     action:"deleteproduct"
   }, id);
-
   await firstValueFrom(deleteObservable);
 }
+
+  async readImages(id: string,successCallBack?:()=>void):Promise<ListProductImages[]>{ //async kullanıyorsan promise yapmalısın promise ise return le zorunlu
+  const getObservable:Observable<ListProductImages[]>= this.httpClientService.get<ListProductImages[]>({ //bir ürüne karsı birden fazla foto oldugu için dizi sekinde cagırdık
+      controller:"products",
+      action:"getproductimagedetail"
+    },id);
+
+    const images:ListProductImages[]=await firstValueFrom(getObservable);
+    successCallBack();
+   return images; //bekletme için
   }
+}
+  
