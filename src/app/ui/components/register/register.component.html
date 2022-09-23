@@ -3,29 +3,33 @@
     <div class="col-md-8">
         <form [formGroup]="frm" (ngSubmit)="onSubmit(frm.value)">
             <div class="form-group">
-              <label for="exampleInputEmail1">Email address</label>
-              <input type="email" formControlName="email" class="form-control" id="exampleInputEmail1"  placeholder="Enter email">
-              <small id="emailHelp" class="form-text text-muted" style="display: none;">We'll never share your email with anyone else.</small>
+              <label for="email">Email address</label>
+              <input type="email" formControlName="email" class="form-control" id="email"  placeholder="Enter email" [ngClass]="{'is-invalid': submitted && component.email.errors}">
+              <small class="invalid-feedback form-text text-muted" *ngIf="submitted && component.email.errors?.email">E-mail Formatında Giriş Yapınız</small>
+              <small class="invalid-feedback form-text text-muted" *ngIf="submitted && component.email.errors?.required">E-mail adresi boş geçilemez</small>
+              <small class="invalid-feedback form-text text-muted" *ngIf="submitted && (component.email.errors?.minlength  || component.email.errors?.maxlength)">2-500 karakter arasında olmalıdır</small>
             </div>
             <div class="form-group">
                 <label for="ad">Ad Soyad</label>
-                <input type="text" formControlName="adSoyad" class="form-control" id="ad" placeholder="Ad Soyad">
-                <small id="emailHelp" class="form-text text-muted" style="display: none;">We'll never share your email with anyone else.</small>
+                <input type="text" formControlName="adSoyad" class="form-control" id="ad" placeholder="Ad Soyad" [ngClass]="{'is-invalid': submitted && component.adSoyad.errors}">
+                <small class="invalid-feedback form-text text-muted" *ngIf="submitted && component.adSoyad.errors?.required" >Ad-Soyad boş geçilemez</small>
               </div>
             <div class="form-group">
                 <label for="kullaniciAdi">Kullanıcı Adı </label>
-                <input type="text"  formControlName="kullaniciAdi" class="form-control" id="kullaniciAdi" placeholder="Kullanıcı Adı">
-                <small id="emailHelp" class="form-text text-muted" style="display: none;">We'll never share your email with anyone else.</small>
+                <input type="text"  formControlName="kullaniciAdi" class="form-control" id="kullaniciAdi" placeholder="Kullanıcı Adı" [ngClass]="{'is-invalid': submitted && component.kullaniciAdi.errors}">
+                <small class="invalid-feedback form-text text-muted" *ngIf="submitted && component.kullaniciAdi.errors?.required" >Kullanıcı Adı boş geçilemez</small>
               </div>
             <div class="form-group">
-              <label for="exampleInputPassword1">Şifre </label>
-              <input type="password"  formControlName="sifre" class="form-control" id="exampleInputPassword1" placeholder="Şifre">
-              <small id="emailHelp" class="form-text text-muted" style="display: none;">We'll never share your email with anyone else.</small>
+              <label for="sifre">Şifre </label>
+              <input type="password"  formControlName="sifre" class="form-control" id="sifre" placeholder="Şifre"  [ngClass]="{'is-invalid': submitted && component.sifre.errors}">
+              <small class="invalid-feedback form-text text-muted" *ngIf="submitted && component.sifre.errors?.required" >Şifre boş geçilemez</small>
+
             </div>
             <div class="form-group">
                 <label for="sifreTekrar">Şifre Tekrar </label>
-                <input type="password"  formControlName="sifreTekrar" class="form-control" id="sifreTekrar" placeholder="Şifre Tekrar">
-                <small id="emailHelp" class="form-text text-muted" style="display: none;">We'll never share your email with anyone else.</small>
+                <input type="password"  formControlName="sifreTekrar" class="form-control" id="sifreTekrar" placeholder="Şifre Tekrar"  [ngClass]="{'is-invalid': submitted && component.sifreTekrar.errors}">
+                <small  *ngIf="submitted && frm.hasError('notSame')" >Şifreler uyuşmuyor</small>
+                
               </div>
               <br>
             <div class="form-group form-check">
