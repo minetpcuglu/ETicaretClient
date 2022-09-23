@@ -1,5 +1,10 @@
 import { Component, OnInit, TRANSLATIONS } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
+import { CreateUser } from 'src/app/contracts/users/createUser';
+import { User } from 'src/app/entities/user';
+import { PositionType } from 'src/app/services/admin/alertify.service';
+import { UserService } from 'src/app/services/common/models/user.service';
+import { CustomToastrService, ToastrMessageType, ToastrPosition } from 'src/app/services/ui/custom-toastr.service';
 
 @Component({
   selector: 'app-register',
@@ -8,17 +13,17 @@ import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators }
 })
 export class RegisterComponent implements OnInit {
 
-  constructor( private formBuilder:FormBuilder) { } //reactiveform
+  constructor( private formBuilder:FormBuilder,private userService:UserService,private toastrService:CustomToastrService) { } //reactiveform
 
   frm:FormGroup;
   ngOnInit(): void {
     this.frm=this.formBuilder.group({
-      adSoyad:["", [
+      nameSurname:["", [
         Validators.required,
         Validators.maxLength(50),
         Validators.minLength(2)
       ]],
-      kullaniciAdi:["", [
+      username:["", [
         Validators.required,
         Validators.maxLength(500),
         Validators.minLength(2)
@@ -29,20 +34,20 @@ export class RegisterComponent implements OnInit {
         Validators.maxLength(500),
         Validators.minLength(2)
       ]],
-      sifre:["",
+      password:["",
     [
       Validators.required
     ]],
-      sifreTekrar:["",
+      passwordConfirm:["",
     [
       Validators.required
     ]]
     },
     {
       validator:(group:AbstractControl):ValidationErrors | null =>{
-        let sifre = group.get("sifre").value;
-        let sifreTekrar = group.get("sifreTekrar").value; 
-        return sifre==sifreTekrar ? null :{notSame:true};
+        let password = group.get("password").value;
+        let passwordConfirm = group.get("passwordConfirm").value; 
+        return password==passwordConfirm ? null :{notSame:true};
       }
     })
   }
@@ -52,11 +57,23 @@ export class RegisterComponent implements OnInit {
   }
 
   submitted:boolean=false;
-  onSubmit(data:any){
+  async onSubmit(user:User){  //tip güvenligi icin
     this.submitted=true;
     if(this.frm.invalid)
     return;
-debugger;
-  }
 
+  const result:CreateUser = await this.userService.create(user);
+  if(result.succeeded)
+    this.toastrService.message(result.message,"Kullanıcı kaydı başarılı",{
+      messageType:ToastrMessageType.Success,
+      position:ToastrPosition.TopRigth
+    })
+
+    else
+    this.toastrService.message(result.message,"Kullanıcı kaydı başarısız",{
+      messageType:ToastrMessageType.Error,
+      position:ToastrPosition.TopRigth
+  })
 }
+}
+  
