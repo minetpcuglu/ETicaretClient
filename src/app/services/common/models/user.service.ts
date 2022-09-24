@@ -1,7 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { firstValueFrom, Observable } from 'rxjs';
-import { CreateUser } from 'src/app/contracts/users/createUser';
+import { CreateUser } from 'src/app/contracts/users/createuser';
 import { User } from 'src/app/entities/user';
 import { HttpClientService } from '../http-client.service';
 
@@ -18,5 +18,16 @@ export class UserService {
 
     return await firstValueFrom(observable) as CreateUser;
   }
+
+  async login(usernameOrEmail:string,password:string,callBackFunction?:()=>void):Promise<void>{
+    const observable:Observable<any>=this.httpClientService.post({
+      controller:"users",
+      action:"login"
+    },{usernameOrEmail,password})
+    await firstValueFrom(observable);
+    callBackFunction();
+  }
 }
+
+
 

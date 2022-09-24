@@ -1,6 +1,8 @@
 import { Component, OnInit, TRANSLATIONS } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
-import { CreateUser } from 'src/app/contracts/users/createUser';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { BaseComponent } from 'src/app/base/base.component';
+import { CreateUser } from 'src/app/contracts/users/createuser';
 import { User } from 'src/app/entities/user';
 import { PositionType } from 'src/app/services/admin/alertify.service';
 import { UserService } from 'src/app/services/common/models/user.service';
@@ -11,9 +13,11 @@ import { CustomToastrService, ToastrMessageType, ToastrPosition } from 'src/app/
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss']
 })
-export class RegisterComponent implements OnInit {
+export class RegisterComponent extends BaseComponent implements OnInit {
 
-  constructor( private formBuilder:FormBuilder,private userService:UserService,private toastrService:CustomToastrService) { } //reactiveform
+  constructor( private formBuilder:FormBuilder,private userService:UserService,private toastrService:CustomToastrService,private spinner:NgxSpinnerService) { 
+   super(spinner)
+  } //reactiveform
 
   frm:FormGroup;
   ngOnInit(): void {
