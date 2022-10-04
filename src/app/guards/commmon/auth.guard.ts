@@ -4,6 +4,7 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Observable } from 'rxjs';
 import { SpinnerType } from 'src/app/base/base.component';
+import { _isAuthenticated } from 'src/app/services/common/auth.service';
 import { CustomToastrService, ToastrMessageType, ToastrPosition } from 'src/app/services/ui/custom-toastr.service';
 
 @Injectable({
@@ -29,7 +30,7 @@ export class AuthGuard implements CanActivate {
     catch{
       expired=true;
     }
-    if(!token || expired)//token yoksa veya expired edilmişsse
+    if(!_isAuthenticated)//token yoksa veya expired edilmişsse ///authenticate degilse işlemleri yap 
     {
     this.router.navigate(["login"],{queryParams:{returnUrl:state.url}}) //logine gönder
     this.toastrService.message("Lütfen Oturum Acınız","Yetkisiz Erisim",{
