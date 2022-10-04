@@ -1,7 +1,6 @@
 
 import { Injectable } from '@angular/core';
 import { firstValueFrom, Observable } from 'rxjs';
-import { AccessToken } from 'src/app/contracts/token/accesstoken';
 import { TokenResponse } from 'src/app/contracts/token/tokenResponse';
 import { CreateUser } from 'src/app/contracts/users/createuser';
 import { User } from 'src/app/entities/user';

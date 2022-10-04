@@ -4,6 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { JwtModule } from '@auth0/angular-jwt';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { ToastrModule } from 'ngx-toastr';
 import { AdminModule } from './admin/admin.module';
@@ -29,11 +30,18 @@ import { UiModule } from './ui/ui.module';
     NgxSpinnerModule,
     BrowserAnimationsModule,// required animations module
     ToastrModule.forRoot(), // ToastrModule added
-    HttpClientModule
+    HttpClientModule,
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: ()=>localStorage.getItem("token"),
+        allowedDomains:["localhost:44311"]
+      }
+    })
   ],
   //base url merkezi kısımda tutma
   providers: [
-    {provide:"baseUrl",useValue:"https://localhost:44311/api",multi:true}
+    {provide:"baseUrl",useValue:"https://localhost:44311/api",multi:true},
+
   ],
   bootstrap: [AppComponent]
 })

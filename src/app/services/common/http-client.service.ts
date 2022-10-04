@@ -21,7 +21,7 @@ export class HttpClientService {
    else 
        url=`${this.url(requestParameters)}${id ? `/${id}` : "" }${requestParameters.queryString ? `?${requestParameters.queryString}` :"" }`;
   return this.httpClient.get<T>(url,{headers:requestParameters.headers}); //url varsa query eklenir yoksa bos gecer
-  debugger;
+
 }
 
   post<T>(requestParameters :Partial<RequestParameters>,body:Partial<T>):Observable<T>{
