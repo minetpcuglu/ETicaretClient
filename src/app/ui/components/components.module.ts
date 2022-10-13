@@ -20,7 +20,7 @@ import { LoginModule } from './login/login.module';
     HomeModule,
     BasketsModule,
     RegisterModule,
-    LoginModule
+    // LoginModule /login component direk ana module aldık google otuurum acma için
   ]
 })
 export class ComponentsModule { }

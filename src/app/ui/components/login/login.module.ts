@@ -7,7 +7,7 @@ import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [
-    LoginComponent
+    // LoginComponent ///login component direk ana module aldık google otuurum acma için
   ],
   imports: [
     CommonModule,
