@@ -1,5 +1,5 @@
 import { FacebookLoginProvider, GoogleLoginProvider, SocialAuthServiceConfig, SocialLoginModule } from '@abacritt/angularx-social-login';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
@@ -11,6 +11,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { AdminModule } from './admin/admin.module';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { HttpErrorHandlerInterceptorService } from './services/common/http-error-handler-interceptor.service';
 import { LoginComponent } from './ui/components/login/login.component';
 import { UiModule } from './ui/ui.module';
 
@@ -57,7 +58,8 @@ import { UiModule } from './ui/ui.module';
         ],
         onError: err => console.log(err)
       } as SocialAuthServiceConfig
-    }
+    },
+    {provide:HTTP_INTERCEPTORS,useClass:HttpErrorHandlerInterceptorService,multi:true} //intercaeptor mimariye tasıma
 
   ],
   bootstrap: [AppComponent]
