@@ -22,6 +22,7 @@ export class UserAuthService {
     if(tokenResponse)
     {
       localStorage.setItem("token",tokenResponse.token.token);
+      localStorage.setItem("refreshToken",tokenResponse.token.refreshToken); //refresh token barındırma icin
       // localStorage.setItem("expiration",accesstoken.expiration.toString());
       this.toastrService.message("Kullanıcı girişi başarılı","giriş başarılı",{
         position:ToastrPosition.TopRigth,
@@ -40,10 +41,25 @@ async googleLogin(user:SocialUser,callBackFunction? :() => void):Promise<any>{
 const tokenResponse= await firstValueFrom(observable) as TokenResponse;
 if(tokenResponse){
 localStorage.setItem("token",tokenResponse.token.token);//*?
+localStorage.setItem("refreshToken",tokenResponse.token.refreshToken); //refresh token barındırma icin
 this.toastrService.message("Google üzerinden giriş başarıyla saglanmıstır","Giriş Başarılı",{
  position:ToastrPosition.TopRigth,
   messageType:ToastrMessageType.Success,
 });
+}
+callBackFunction();
+}
+
+async refreshTokenLogin(refreshToken:string,callBackFunction? :() => void): Promise<any>{
+const observable :Observable<any |TokenResponse> =this.httpClientService.post({
+  action:"refreshToken",
+  controller:"auth"
+},{refreshToken:refreshToken});
+const tokenResponse: TokenResponse = await firstValueFrom(observable) as TokenResponse;
+if(tokenResponse){
+  localStorage.setItem("token",tokenResponse.token.token);
+  localStorage.setItem("refreshToken",tokenResponse.token.refreshToken); //refresh token barındırma icin
+  // localStorage.setItem("expiration",accesstoken.expiration.toString());
 }
 callBackFunction();
 }
