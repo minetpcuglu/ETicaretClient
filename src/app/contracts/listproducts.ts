@@ -1,3 +1,5 @@
+import { ListProductImages } from "./listproductimages";
+
 export class ListProducts{
     id:string;
     name:string;
@@ -5,4 +7,6 @@ export class ListProducts{
     price:number;
     createdDate:Date;
     updatedDate:Date;
+    productImageFiles:ListProductImages[];
+    imagePath:string;
 }

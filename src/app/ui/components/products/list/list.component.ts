@@ -31,6 +31,35 @@ this.currentPageNo=params["pageNo"] ?? 1;
       errorMessage => {
   
       });
+      this.products = data.products;
+
+      this.products = this.products.map<ListProducts>(p => {
+        const listProduct: ListProducts = {
+          id: p.id,
+          createdDate: p.createdDate,
+          imagePath: p.productImageFiles.length ? p.productImageFiles.find(p => p.showcase).path : "",
+          name: p.name,
+          price: p.price,
+          unitInStock: p.unitInStock,
+          updatedDate: p.updatedDate,
+          productImageFiles: p.productImageFiles
+        };
+
+        return listProduct;
+      });
+
+      this.products.forEach((product,i)=>{
+        let p : any ={
+          name:product.name,
+          id:product.id,
+          price:product.price,
+          unitInStock:product.unitInStock,
+          updatedDate:product.updatedDate,
+          createdDate:product.createdDate,
+          imagePath:product.productImageFiles.length ? product.productImageFiles.find(p=>p.showcase).path :""
+        };
+      });
+
       this.totalCount = data.totalCount;
       this.totalPageCount = Math.ceil(this.totalCount / this.pageSize);
 
